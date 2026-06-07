@@ -115,7 +115,7 @@ python run_train.py
 +----------------------+----------------------------------------------+
 ```
 
-默认 checkpoint 根目录在 `run_train.py` 的 `CHECKPOINT_ROOT` 中配置。当前实验使用 `D:\recbole_checkpoints`，换机器后需要改成本机路径或相对路径。
+默认 checkpoint 根目录在 `run_train.py` 的 `CHECKPOINT_ROOT` 中配置。当前实验使用 `D:\recbole_checkpoints`
 
 ## 评估
 
@@ -131,7 +131,7 @@ results/logs/<dataset>_<model>_<tag>.json
 python scripts/eval_full_catalog_hr.py
 ```
 
-自定义 CrossDomainNeuMF 全库评估：
+自定义 CrossDomainNeuMF 的全库评估：
 
 ```powershell
 python scripts/eval_crossdomain_full_catalog.py
@@ -199,12 +199,9 @@ python run_train.py
 +----------------------+----------------------------------------------+
 | dataset              | yaml 中 dataset 与转换时 --name 一致         |
 | data_path            | 默认 datasets/                               |
-| checkpoint_dir       | 换机器后改成本机可写路径                     |
 | EVAL_ONLY            | 没有已有权重时应设为 False                   |
 | eval_*_user_cap      | 控制验证 / 测试抽样用户数                    |
 +----------------------+----------------------------------------------+
 ```
 
-## 不进入仓库的内容
 
-`.gitignore` 已排除本地环境、缓存、日志、TensorBoard、全量数据、checkpoint 和临时输出。分享代码时通常只需要保留源码、配置、报告、精选 JSON 和样例数据。
