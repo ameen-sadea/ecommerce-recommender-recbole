@@ -1,0 +1,49 @@
+# CrossDomainNeuMF — run_train.py：MODEL = "crossdomain_neumf"
+# 训练后端：自定义多负例 BPR（非 RecBole NeuMF）
+#
+# 本文件对齐 train0531（Test HR@10≈0.72）共用超参 + 评估协议。
+# Phase1：learning_rate=0.001，epochs=40
+# Phase2：RESUME_FROM=best_ckpt.pt，RESUME_LR=0.0001，EPOCHS=25（见 run_train.py 顶部）
+
+dataset: movies_tv
+data_path: datasets/
+
+model: CrossDomainNeuMF
+
+seed: 42
+reproducibility: true
+
+# --- 模型（train0531）---
+embed_dim: 64
+domain_embed_dim: 16
+mlp_hidden: [256, 128]
+dropout: 0.4
+gmf_domain_aware: true
+share_embeddings: true
+
+# --- 训练（train0531）---
+num_negatives_train: 32
+train_loss: bpr_weighted   # 等同 bpr：32 负 mean BPR；不用 bpr_max
+batch_size: 512
+learning_rate: 0.0001        # Phase1；Phase2 续训改 1e-4
+weight_decay: 0.00001       # 1e-5
+epochs: 40
+patience: 4
+amp: true
+grad_clip: 5.0
+num_workers: 2
+
+# --- 评估（train0531：99 负 + val 1 万 + test 2 千）---
+num_negatives_eval: 100
+eval_valid_user_cap: 20000
+eval_test_user_cap: 20000
+eval_sample_seed: 42
+eval_same_domain_negatives: true
+
+topk: [10]
+valid_metric: NDCG@10
+
+full_catalog_eval_enabled: false
+
+checkpoint_dir: D:/recbole_checkpoints/movies_tv/CrossDomainNeuMF
+show_progress: true

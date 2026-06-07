@@ -1,0 +1,75 @@
+# SASRec on Movies_and_TV（序列推荐，与 BPR 同一 LOO 划分，经 movies_tv_seq 转换）
+#
+# K=50（默认）: MODEL=sasrec    → movies_tv_seq      → .../SASRec
+# K=5         : MODEL=sasrec_k5  → movies_tv_seq_k5   → .../SASRec_k5
+# K=2         : MODEL=sasrec_k2  → movies_tv_seq_k2   → .../SASRec_k2
+
+dataset: movies_tv_seq
+data_path: datasets/
+benchmark_filename: ['train', 'valid', 'test']
+
+field_separator: "\t"
+seq_separator: " "
+load_col:
+  inter: [user_id, item_id, item_id_list]
+alias_of_item_id: [item_id_list]
+TIME_FIELD: timestamp
+
+model: SASRec
+hidden_size: 128
+n_layers: 2
+n_heads: 2
+inner_size: 256
+hidden_dropout_prob: 0.3
+attn_dropout_prob: 0.3
+hidden_act: gelu
+loss_type: CE
+MAX_ITEM_LIST_LENGTH: 50
+# 若 movies_tv_seq 文件实际更宽，run_train 会自动提升到文件宽度以免 position_embedding 越界
+
+seed: 2020
+reproducibility: True
+learner: adam
+learning_rate: 0.001
+weight_decay: 0.0
+epochs: 30
+train_batch_size: 512
+eval_batch_size: 2048
+
+# 仅评估负例个数 → uni100；训练负采样对 SASRec(CE) 无效
+num_negatives_eval: 100
+neg_sampling_dynamic: false
+
+full_catalog_eval_enabled: false
+full_catalog_eval_topk: [10, 20, 50]
+full_catalog_eval_on: test
+full_catalog_eval_user_cap: 0
+
+eval_step: 1
+stopping_step: 3
+eval_args:
+  order: TO
+  group_by: user
+  split: {'LS': 'valid_and_test'}
+
+eval_valid_user_cap: 20000
+eval_test_user_cap: 20000
+eval_sample_seed: 42
+
+metrics: ['Hit', 'NDCG', 'MRR', 'Recall', 'GAUC']
+topk: [10]
+valid_metric: NDCG@10
+
+user_inter_num_interval: "[1,inf)"
+item_inter_num_interval: "[1,inf)"
+
+checkpoint_dir: D:/recbole_checkpoints/movies_tv/SASRec
+
+# warm-start：从 general 模型拷贝 item embedding（hidden_size 会自动与源 checkpoint 对齐）
+init_item_embedding_from: null   # null | bpr | neumf | neumf_mlp
+init_item_embedding_ckpt: null  # null → D:/recbole_checkpoints/movies_tv/BPR/best.pth
+# BPR 当前 embedding_size=64；启用继承后 run_train 会把 hidden_size 自动改为 64 并在日志打印
+
+show_progress: True
+save_dataset: False
+save_dataloaders: False

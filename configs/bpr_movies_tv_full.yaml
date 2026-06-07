@@ -1,0 +1,78 @@
+# BPR on Movies_and_TV (完整配置：不依赖 base / 不做多层覆盖)
+#
+# 说明：
+# - RecBole 里 HR@K ≈ Hit@K（在 1正 + 99负 的候选评估下尤其一致）
+# - 你熟悉的 ndcg/mrr 对应 NDCG / MRR
+#
+# 数据集：由 scripts/convert_csv_to_recbole.py 生成的 atomic 格式
+dataset: movies_tv
+data_path: datasets/
+benchmark_filename: ['train', 'valid', 'test']
+
+# 模型
+model: BPR
+embedding_size: 64
+
+# 训练
+seed: 2020
+reproducibility: True
+learner: adam
+learning_rate: 0.0005
+weight_decay: 0
+epochs: 20
+train_batch_size: 8192
+
+# ---------- 负采样（平台字段，run_train 转为 RecBole 参数）----------
+# 训练：每个正例配几个负例（≈ crossdomain 的 num_negatives）
+num_negatives_train: 1
+# 评估：每个正例配几个负例 → eval_args.mode = uni{N}（1正+N负 共 N+1 个候选）
+# 对齐 crossdomain 请改为 99；当前 100 等价于原先的 uni100
+num_negatives_eval: 100
+neg_sampling_distribution: uniform   # uniform | popularity
+neg_sampling_dynamic: false          # true = 动态难负例（更慢，常略提指标）
+neg_sampling_candidate_num: 0        # dynamic=true 时先采多少候选再挑难负（如 200）
+# neg_sampling_alpha: 1.0            # popularity 负采样时的指数（默认 1.0）
+# eval_neg_mode: uni                 # uni | pop | full（valid/test 每轮评估；极慢慎用 full）
+# 也可直接写 RecBole 原名 train_neg_sample_args: {...}（与上合并，上优先）
+#
+# 动态难负例示例（对齐 crossdomain）：
+#   num_negatives_train: 48
+#   neg_sampling_dynamic: true
+#   neg_sampling_candidate_num: 200
+
+full_catalog_eval_enabled: true
+full_catalog_eval_topk: [10, 50]
+full_catalog_eval_on: test
+full_catalog_eval_user_cap: 0
+
+# 评估
+eval_step: 1
+stopping_step: 5
+eval_batch_size: 8192
+eval_args:
+  order: TO
+  group_by: user
+  split: {'LS': 'valid_and_test'}
+  # mode 由 num_negatives_eval / eval_neg_mode 自动生成，一般不必手写
+
+# valid/test 随机抽用户评估（leave-one-out 下每用户 1 条；0 或 null=全量）
+# 与 crossdomain 的 val_users 思路一致，显著加快每轮 valid
+eval_valid_user_cap: 10000
+eval_test_user_cap: 20000
+eval_sample_seed: 42
+
+# 指标：GAUC = 按用户加权 AUC（ranking 评估可与 Hit/NDCG 同算）；日志/JSON 另复制为 auc
+metrics: ['Hit', 'NDCG', 'MRR', 'Recall', 'GAUC']
+topk: [10]
+valid_metric: NDCG@10
+
+# 数据过滤（避免极端用户导致负采样异常；正常大数据无需动）
+user_inter_num_interval: "[1,inf)"
+item_inter_num_interval: "[1,inf)"
+
+# 输出
+checkpoint_dir: D:/recbole_checkpoints/movies_tv/BPR
+show_progress: True
+save_dataset: False
+save_dataloaders: False
+

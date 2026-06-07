@@ -1,0 +1,30 @@
+{
+  "dataset": "movies_tv",
+  "model": "Pop",
+  "config_path": "configs\\pop_movies_tv_full.yaml",
+  "checkpoint_dir": "D:\\recbole_checkpoints\\movies_tv\\Pop",
+  "best_ckpt": "D:\\recbole_checkpoints\\movies_tv\\Pop\\best.pth",
+  "best_valid_score": 0.4067,
+  "best_valid_result": {
+    "hit@10": 0.6005,
+    "ndcg@10": 0.4067,
+    "mrr@10": 0.3467,
+    "recall@10": 0.6005,
+    "gauc": "0.8309",
+    "hr@10": 0.6005,
+    "auc": "0.8309"
+  },
+  "test_result": {
+    "hit@10": 0.5642,
+    "ndcg@10": 0.3808,
+    "mrr@10": 0.3241,
+    "recall@10": 0.5642,
+    "gauc": "0.8093",
+    "hr@10": 0.5642,
+    "auc": "0.8093"
+  },
+  "test_full_sort_result": null,
+  "full_catalog_result": null,
+  "interrupted": false,
+  "eval_only": false
+}

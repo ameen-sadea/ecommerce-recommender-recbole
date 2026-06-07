@@ -1,0 +1,55 @@
+# NeuMF on Movies_and_TV（完整配置：不依赖 base / 不做多层覆盖）
+
+dataset: movies_tv
+data_path: datasets/
+benchmark_filename: ['train', 'valid', 'test']
+
+model: NeuMF
+mf_embedding_size: 128
+mlp_embedding_size: 64
+mlp_hidden_size: [128, 64]  # 与 D:/recbole_checkpoints/movies_tv/NeuMF/best.pth 一致
+dropout_prob: 0.4
+
+seed: 2020
+reproducibility: True
+learner: adam
+learning_rate: 0.001
+weight_decay: 0.00001
+epochs: 20
+train_batch_size: 2048
+
+num_negatives_train: 1
+num_negatives_eval: 100
+neg_sampling_distribution: uniform
+neg_sampling_dynamic: false
+neg_sampling_candidate_num: 0
+
+full_catalog_eval_enabled: true
+full_catalog_eval_topk: [10, 50]
+full_catalog_eval_on: test
+full_catalog_eval_user_cap: 0
+
+eval_step: 1
+stopping_step: 5
+eval_batch_size: 4096
+eval_args:
+  order: TO
+  group_by: user
+  split: {'LS': 'valid_and_test'}
+
+eval_valid_user_cap: 20000
+eval_test_user_cap: 20000
+eval_sample_seed: 42
+
+metrics: ['Hit', 'NDCG', 'MRR', 'Recall', 'GAUC']
+topk: [10]
+valid_metric: NDCG@10
+
+user_inter_num_interval: "[1,inf)"
+item_inter_num_interval: "[1,inf)"
+
+checkpoint_dir: D:/recbole_checkpoints/movies_tv/NeuMF
+show_progress: True
+save_dataset: False
+save_dataloaders: False
+

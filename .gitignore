@@ -1,0 +1,39 @@
+# Python cache
+__pycache__/
+*.py[cod]
+.pytest_cache/
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# IDE / OS
+.vscode/
+.cursor/
+.DS_Store
+Thumbs.db
+
+# Local raw data and generated RecBole datasets
+data/Movies_and_TV/
+datasets/*/
+!datasets/.gitkeep
+
+# Logs and TensorBoard outputs
+log/
+log_tensorboard/
+*.log
+
+# Generated checkpoints and temporary outputs
+results/checkpoints/
+results/crossdomain_smoke/
+results/logs/*
+!results/logs/.gitkeep
+saved/
+*.pth
+*.pt
+*.ckpt
+
+# Large or local experiment artifacts
+*.tfevents.*
+

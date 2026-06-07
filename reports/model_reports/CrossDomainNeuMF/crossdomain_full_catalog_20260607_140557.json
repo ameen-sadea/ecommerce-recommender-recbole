@@ -1,0 +1,25 @@
+{
+  "model": "CrossDomainNeuMF",
+  "checkpoint": "D:/recbole_checkpoints/movies_tv/CrossDomainNeuMF\\best_ckpt.pt",
+  "on": "test",
+  "user_cap": 20000,
+  "eval_sample_seed": 42,
+  "item_batch_size": 8192,
+  "topk_list": [
+    10,
+    50
+  ],
+  "results": {
+    "test": {
+      "hr@10": 0.021701085054252712,
+      "ndcg@10": 0.011055505679152465,
+      "mrr@10": 0.007837375995783914,
+      "hr@50": 0.06235311765588279,
+      "ndcg@50": 0.019653682756138977,
+      "mrr@50": 0.009510237782667108,
+      "meanrank": 22553.912695634783,
+      "n_users": 19999.0,
+      "max_k": 50.0
+    }
+  }
+}

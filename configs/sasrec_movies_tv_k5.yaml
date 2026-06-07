@@ -1,0 +1,68 @@
+# SASRec K=5：dataset 指向手动生成的 movies_tv_seq_k5
+# run_train.py 中 MODEL = "sasrec_k5"
+
+dataset: movies_tv_seq_k5
+data_path: datasets/
+benchmark_filename: ['train', 'valid', 'test']
+
+field_separator: "\t"
+seq_separator: " "
+load_col:
+  inter: [user_id, item_id, item_id_list]
+alias_of_item_id: [item_id_list]
+TIME_FIELD: timestamp
+
+model: SASRec
+hidden_size: 128
+n_layers: 2
+n_heads: 2
+inner_size: 256
+hidden_dropout_prob: 0.3
+attn_dropout_prob: 0.3
+hidden_act: gelu
+loss_type: CE
+MAX_ITEM_LIST_LENGTH: 5
+
+seed: 2020
+reproducibility: True
+learner: adam
+learning_rate: 0.001
+weight_decay: 0.0
+epochs: 30
+train_batch_size: 512
+eval_batch_size: 2048
+
+num_negatives_eval: 100
+neg_sampling_dynamic: false
+
+full_catalog_eval_enabled: false
+full_catalog_eval_topk: [10, 20, 50]
+full_catalog_eval_on: test
+full_catalog_eval_user_cap: 0
+
+eval_step: 1
+stopping_step: 3
+eval_args:
+  order: TO
+  group_by: user
+  split: {'LS': 'valid_and_test'}
+
+eval_valid_user_cap: 20000
+eval_test_user_cap: 20000
+eval_sample_seed: 42
+
+metrics: ['Hit', 'NDCG', 'MRR', 'Recall', 'GAUC']
+topk: [10]
+valid_metric: NDCG@10
+
+user_inter_num_interval: "[1,inf)"
+item_inter_num_interval: "[1,inf)"
+
+checkpoint_dir: D:/recbole_checkpoints/movies_tv/SASRec_k5
+
+init_item_embedding_from: null
+init_item_embedding_ckpt: null
+
+show_progress: True
+save_dataset: False
+save_dataloaders: False

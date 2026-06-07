@@ -1,0 +1,58 @@
+# ItemKNN（item-item 协同过滤）on Movies_and_TV
+#
+# 说明：
+# - 相似度在模型 __init__ 时由 train 交互矩阵一次性算完（约 20 万 item 会较慢，请耐心等待）
+# - 训练循环几乎无梯度更新，epochs=1 即可；调 k / shrink / knn_method 后重跑
+# - knn_method: item（推荐）| user
+
+dataset: movies_tv
+data_path: datasets/
+benchmark_filename: ['train', 'valid', 'test']
+
+model: ItemKNN
+k: 100
+shrink: 0.0
+knn_method: item
+
+seed: 2020
+reproducibility: True
+learner: adam
+learning_rate: 0.001
+weight_decay: 0
+epochs: 1
+train_batch_size: 8192
+
+num_negatives_train: 1
+num_negatives_eval: 100
+neg_sampling_distribution: uniform
+neg_sampling_dynamic: false
+neg_sampling_candidate_num: 0
+
+full_catalog_eval_enabled: false
+full_catalog_eval_topk: [10, 50]
+full_catalog_eval_on: test
+full_catalog_eval_user_cap: 0
+
+eval_step: 1
+stopping_step: 1
+eval_batch_size: 8192
+eval_args:
+  order: TO
+  group_by: user
+  split: {'LS': 'valid_and_test'}
+
+eval_valid_user_cap: 20000
+eval_test_user_cap: 20000
+eval_sample_seed: 42
+
+metrics: ['Hit', 'NDCG', 'MRR', 'Recall', 'GAUC']
+topk: [10]
+valid_metric: NDCG@10
+
+user_inter_num_interval: "[1,inf)"
+item_inter_num_interval: "[1,inf)"
+
+checkpoint_dir: D:/recbole_checkpoints/movies_tv/ItemKNN
+show_progress: True
+save_dataset: False
+save_dataloaders: False

@@ -1,0 +1,57 @@
+# LightGCN on Movies_and_TV（完整配置：不依赖 base / 不做多层覆盖）
+
+dataset: movies_tv
+data_path: datasets/
+benchmark_filename: ['train', 'valid', 'test']
+
+model: LightGCN
+embedding_size: 128
+n_layers: 2
+reg_weight: 1e-4
+
+seed: 2020
+reproducibility: True
+learner: adam
+learning_rate: 0.001
+# LightGCN 用 reg_weight 做嵌入正则；optimizer 的 weight_decay 请保持 0，避免双重正则
+weight_decay: 0.0
+epochs: 20
+train_batch_size: 4096
+
+num_negatives_train: 1
+num_negatives_eval: 100
+neg_sampling_distribution: uniform
+neg_sampling_dynamic: True
+neg_sampling_candidate_num: 32
+
+# 全库 HR@K：在全部 ~20 万 item 上排序（调参时可 false，定稿再 true）
+full_catalog_eval_enabled: False
+full_catalog_eval_topk: [10, 20, 50]
+full_catalog_eval_on: test
+# 全库 HR 用多少用户：0=该 split 全部用户；10000=仅全库阶段再抽 1 万（与下面 cap 无关）
+full_catalog_eval_user_cap: 0
+
+eval_step: 1
+stopping_step: 5
+eval_batch_size: 4096
+eval_args:
+  order: TO
+  group_by: user
+  split: {'LS': 'valid_and_test'}
+
+eval_valid_user_cap: 20000
+eval_test_user_cap: 20000
+eval_sample_seed: 42
+
+metrics: ['Hit', 'NDCG', 'MRR', 'Recall', 'GAUC']
+topk: [10]
+valid_metric: NDCG@10
+
+user_inter_num_interval: "[1,inf)"
+item_inter_num_interval: "[1,inf)"
+
+checkpoint_dir: D:/recbole_checkpoints/movies_tv/LightGCN
+show_progress: True
+save_dataset: False
+save_dataloaders: False
+

@@ -1,0 +1,53 @@
+# Pop（热门推荐）on Movies_and_TV — 非个性化基线
+#
+# 训练：遍历 train 统计 item 热度（通常 1 epoch 即可）
+# 评估：与其它模型相同 uni100 + eval_*_user_cap
+
+dataset: movies_tv
+data_path: datasets/
+benchmark_filename: ['train', 'valid', 'test']
+
+model: Pop
+
+seed: 2020
+reproducibility: True
+learner: adam
+learning_rate: 0.001
+weight_decay: 0
+epochs: 1
+train_batch_size: 8192
+
+num_negatives_train: 1
+num_negatives_eval: 100
+neg_sampling_distribution: uniform
+neg_sampling_dynamic: false
+neg_sampling_candidate_num: 0
+
+full_catalog_eval_enabled: false
+full_catalog_eval_topk: [10, 50]
+full_catalog_eval_on: test
+full_catalog_eval_user_cap: 0
+
+eval_step: 1
+stopping_step: 1
+eval_batch_size: 8192
+eval_args:
+  order: TO
+  group_by: user
+  split: {'LS': 'valid_and_test'}
+
+eval_valid_user_cap: 20000
+eval_test_user_cap: 20000
+eval_sample_seed: 42
+
+metrics: ['Hit', 'NDCG', 'MRR', 'Recall', 'GAUC']
+topk: [10]
+valid_metric: NDCG@10
+
+user_inter_num_interval: "[1,inf)"
+item_inter_num_interval: "[1,inf)"
+
+checkpoint_dir: D:/recbole_checkpoints/movies_tv/Pop
+show_progress: True
+save_dataset: False
+save_dataloaders: False

@@ -1,0 +1,22 @@
+{
+  "dataset": "movies_tv",
+  "model": "NeuMF",
+  "config_path": "configs\\neumf_movies_tv_full.yaml",
+  "checkpoint_dir": "D:/recbole_checkpoints/movies_tv/NeuMF",
+  "best_ckpt": "D:/recbole_checkpoints/movies_tv/NeuMF\\best.pth",
+  "best_valid_score": -Infinity,
+  "best_valid_result": null,
+  "test_result": {
+    "hit@10": 0.6073,
+    "ndcg@10": 0.4097,
+    "mrr@10": 0.3484,
+    "recall@10": 0.6073,
+    "gauc": "0.8439",
+    "hr@10": 0.6073,
+    "auc": "0.8439"
+  },
+  "test_full_sort_result": null,
+  "full_catalog_result": null,
+  "interrupted": false,
+  "eval_only": true
+}

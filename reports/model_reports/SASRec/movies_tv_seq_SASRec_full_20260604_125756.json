@@ -1,0 +1,51 @@
+{
+  "dataset": "movies_tv_seq",
+  "model": "SASRec",
+  "config_path": "configs\\sasrec_movies_tv_full.yaml",
+  "checkpoint_dir": "D:\\recbole_checkpoints\\movies_tv_seq\\SASRec",
+  "best_ckpt": "D:\\recbole_checkpoints\\movies_tv_seq\\SASRec\\best.pth",
+  "best_valid_score": 0.6874,
+  "best_valid_result": {
+    "hit@10": 0.8442,
+    "ndcg@10": 0.6874,
+    "mrr@10": 0.6375,
+    "recall@10": 0.8442,
+    "gauc": "0.9406",
+    "hr@10": 0.8442,
+    "auc": "0.9406"
+  },
+  "test_result": {
+    "hit@10": 0.8038,
+    "ndcg@10": 0.6369,
+    "mrr@10": 0.5842,
+    "recall@10": 0.8038,
+    "gauc": "0.924",
+    "hr@10": 0.8038,
+    "auc": "0.924"
+  },
+  "test_full_sort_result": {
+    "hit@10": 0.0865,
+    "hit@20": 0.1201,
+    "hit@50": 0.1759,
+    "hit@100": 0.2282,
+    "hr@10": 0.0865,
+    "hr@20": 0.1201,
+    "hr@50": 0.1759,
+    "hr@100": 0.2282
+  },
+  "full_catalog_result": {
+    "test": {
+      "hit@10": 0.0865,
+      "hit@20": 0.1201,
+      "hit@50": 0.1759,
+      "hit@100": 0.2282,
+      "hr@10": 0.0865,
+      "hr@20": 0.1201,
+      "hr@50": 0.1759,
+      "hr@100": 0.2282
+    }
+  },
+  "full_catalog_eval_note": "2026-06-04 eval_full_catalog_hr.py, 657203 users, ~12s, log SASRec-movies_tv_seq-Jun-04-2026_16-22-57-6b07c4.log",
+  "interrupted": false,
+  "eval_only": false
+}

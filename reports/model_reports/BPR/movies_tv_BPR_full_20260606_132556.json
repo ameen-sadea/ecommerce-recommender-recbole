@@ -1,0 +1,22 @@
+{
+  "dataset": "movies_tv",
+  "model": "BPR",
+  "config_path": "configs\\bpr_movies_tv_full.yaml",
+  "checkpoint_dir": "D:\\recbole_checkpoints\\movies_tv\\BPR",
+  "best_ckpt": "D:\\recbole_checkpoints\\movies_tv\\BPR\\best.pth",
+  "best_valid_score": -Infinity,
+  "best_valid_result": null,
+  "test_result": {
+    "hit@10": 0.706,
+    "ndcg@10": 0.5041,
+    "mrr@10": 0.4411,
+    "recall@10": 0.706,
+    "gauc": "0.8863",
+    "hr@10": 0.706,
+    "auc": "0.8863"
+  },
+  "test_full_sort_result": null,
+  "full_catalog_result": null,
+  "interrupted": false,
+  "eval_only": true
+}

@@ -1,0 +1,22 @@
+{
+  "dataset": "movies_tv_seq_k5",
+  "model": "SASRec",
+  "config_path": "configs\\sasrec_movies_tv_k5.yaml",
+  "checkpoint_dir": "D:/recbole_checkpoints/movies_tv/SASRec_k5",
+  "best_ckpt": "D:/recbole_checkpoints/movies_tv/SASRec_k5\\best.pth",
+  "best_valid_score": -Infinity,
+  "best_valid_result": null,
+  "test_result": {
+    "hit@10": 0.7904,
+    "ndcg@10": 0.6239,
+    "mrr@10": 0.5714,
+    "recall@10": 0.7904,
+    "gauc": "0.9217",
+    "hr@10": 0.7904,
+    "auc": "0.9217"
+  },
+  "test_full_sort_result": null,
+  "full_catalog_result": null,
+  "interrupted": false,
+  "eval_only": true
+}

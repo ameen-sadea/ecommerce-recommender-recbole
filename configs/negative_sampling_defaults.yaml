@@ -1,0 +1,33 @@
+# 负采样默认值（run_train.py 会先加载本文件，再被各模型 *_full.yaml 覆盖）
+# 序列模型 SASRec(CE) 会在 apply_sequential_model_config 中清掉 train 负采样，仅保留 eval uni{N}
+#
+# === 训练负例 / 动态难负例 ===
+#   num_negatives_train          → train_neg_sample_args.sample_num
+#   neg_sampling_dynamic         → train_neg_sample_args.dynamic
+#   neg_sampling_candidate_num   → dynamic=true 时先采多少候选再挑难负（如 200）
+#   neg_sampling_distribution    → uniform | popularity
+#
+# === 验证/测试（uni 采样）===
+#   num_negatives_eval           → eval_args.mode = uni{N}
+#
+# === 全库 HR@K（对所有 item 排序，非 uni100；训练结束后额外跑，很慢）===
+#   full_catalog_eval_enabled: true
+#   full_catalog_eval_topk: [10, 20, 50]    # 或 50
+#   full_catalog_eval_on: test               # test | valid | both
+# 旧名仍可用：test_full_sort_enabled / test_full_sort_topk
+#
+# crossdomain 对齐示例：
+#   num_negatives_train: 48
+#   num_negatives_eval: 99
+#   neg_sampling_dynamic: true
+#   neg_sampling_candidate_num: 200
+
+num_negatives_train: 1
+num_negatives_eval: 100
+neg_sampling_distribution: uniform
+neg_sampling_dynamic: false
+neg_sampling_candidate_num: 0
+
+full_catalog_eval_enabled: true
+full_catalog_eval_topk: [10, 50]
+full_catalog_eval_on: test

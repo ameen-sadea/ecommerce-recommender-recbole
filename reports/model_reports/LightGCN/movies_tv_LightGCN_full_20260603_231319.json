@@ -1,0 +1,30 @@
+{
+  "dataset": "movies_tv",
+  "model": "LightGCN",
+  "config_path": "configs\\lightgcn_movies_tv_full.yaml",
+  "checkpoint_dir": "D:\\recbole_checkpoints\\movies_tv\\LightGCN",
+  "best_ckpt": "D:\\recbole_checkpoints\\movies_tv\\LightGCN\\best.pth",
+  "best_valid_score": 0.6159,
+  "best_valid_result": {
+    "hit@10": 0.7688,
+    "ndcg@10": 0.6159,
+    "mrr@10": 0.5671,
+    "recall@10": 0.7688,
+    "gauc": "0.8796",
+    "hr@10": 0.7688,
+    "auc": "0.8796"
+  },
+  "test_result": {
+    "hit@10": 0.6788,
+    "ndcg@10": 0.518,
+    "mrr@10": 0.467,
+    "recall@10": 0.6788,
+    "gauc": "0.8245",
+    "hr@10": 0.6788,
+    "auc": "0.8245"
+  },
+  "test_full_sort_result": null,
+  "full_catalog_result": null,
+  "interrupted": true,
+  "eval_only": false
+}

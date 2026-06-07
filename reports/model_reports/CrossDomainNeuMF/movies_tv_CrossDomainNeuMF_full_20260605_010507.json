@@ -1,0 +1,69 @@
+{
+  "tag": "movies_tv_CrossDomainNeuMF_full_20260605_010507",
+  "dataset": "movies_tv",
+  "model": "CrossDomainNeuMF",
+  "best_epoch": 24,
+  "best_valid_score": 0.5762490858837859,
+  "best_valid_result": {
+    "hit@10": 0.77855,
+    "hr@10": 0.77855,
+    "ndcg@10": 0.5762490858837859,
+    "mrr@10": 0.5222240628794855,
+    "recall@10": 0.77855
+  },
+  "test_result": {
+    "hit@10": 0.7012,
+    "hr@10": 0.7012,
+    "ndcg@10": 0.5038029491492867,
+    "mrr@10": 0.45423371068767704,
+    "recall@10": 0.7012
+  },
+  "best_valid_hr10": 0.77855,
+  "test_hr10": 0.7012,
+  "test_ndcg10": 0.5038029491492867,
+  "test_mrr": 0.45423371068767704,
+  "test_meanrank": 12.62375,
+  "eval_negatives": 100,
+  "checkpoint_dir": "D:\\recbole_checkpoints\\movies_tv\\CrossDomainNeuMF",
+  "interrupted": true,
+  "eval_only": false,
+  "config": {
+    "embed_dim": 64,
+    "domain_embed_dim": 16,
+    "mlp_hidden": [
+      256,
+      128
+    ],
+    "dropout": 0.4,
+    "num_negatives": 32,
+    "train_loss": "bpr",
+    "gmf_domain_aware": true,
+    "share_embeddings": true,
+    "batch_size": 512,
+    "lr": 1e-05,
+    "weight_decay": 1e-06,
+    "epochs": 40,
+    "patience": 4,
+    "val_users": 20000,
+    "test_eval_users": 20000,
+    "eval_negatives": 100,
+    "eval_sample_seed": 42,
+    "eval_same_domain_negatives": true,
+    "grad_clip": 5.0,
+    "scheduler_patience": 3,
+    "checkpoint_every": 10,
+    "amp": true,
+    "num_workers": 2,
+    "seed": 42,
+    "dataset": "movies_tv",
+    "data_path": "datasets/",
+    "model": "CrossDomainNeuMF",
+    "reproducibility": true,
+    "topk": [
+      10
+    ],
+    "valid_metric": "NDCG@10",
+    "checkpoint_dir": "D:\\recbole_checkpoints\\movies_tv\\CrossDomainNeuMF",
+    "show_progress": true
+  }
+}
