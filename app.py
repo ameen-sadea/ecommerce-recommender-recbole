@@ -2093,11 +2093,25 @@ def main():
         render_sasrec_status_page(checkpoint_path, checkpoint_exists, candidates)
 
 
-if __name__ == "__main__":
-    import subprocess
-    import sys
+def _running_inside_streamlit() -> bool:
+    try:
+        from streamlit.runtime.scriptrunner import get_script_run_ctx
 
-    subprocess.run(
-        [sys.executable, "-m", "streamlit", "run", __file__, "--server.headless", "true"],
-        check=False,
-    )
+        return get_script_run_ctx() is not None
+    except Exception:
+        return False
+
+
+if __name__ == "__main__":
+    if not _running_inside_streamlit():
+        # 直接 `python app.py` 时拉起 Streamlit 子进程
+        import subprocess
+        import sys
+
+        subprocess.run(
+            [sys.executable, "-m", "streamlit", "run", __file__, "--server.headless", "true"],
+            check=False,
+        )
+    else:
+        # `streamlit run app.py` 由 Streamlit 执行脚本时真正渲染页面
+        main()

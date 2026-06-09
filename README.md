@@ -46,7 +46,7 @@ python app.py
 
 | 项目 | 路径 / 说明 |
 | --- | --- |
-| SASRec 权重 | `D:\recbole_checkpoints\movies_tv_seq\SASRec\best.pth`（或 `results/logs/` 里 SASRec JSON 的 `best_ckpt` 指向有效路径） |
+| SASRec 权重 | `D:\recbole_checkpoints\movies_tv_seq\SASRec\best.pth` |
 | 交互数据 | `datasets/movies_tv/*.inter` |
 | 序列数据 | `datasets/movies_tv_seq/*.inter`（选用户、SASRec 推理） |
 | 展示元数据 | `datasets/movies_tv/display/`（封面、标题、用户昵称） |
@@ -61,26 +61,18 @@ python app.py
 
 原始数据目录需要包含三份 CSV：
 
-```text
-+-----------+------------------------------+
-| 文件      | 必需列                       |
-+-----------+------------------------------+
-| train.csv | user_id, item_id             |
-| valid.csv | user_id, item_id             |
-| test.csv  | user_id, item_id             |
-+-----------+------------------------------+
-```
+| 文件 | 必需列 |
+| --- | --- |
+| train.csv | user_id, item_id |
+| valid.csv | user_id, item_id |
+| test.csv | user_id, item_id |
 
 可选列：
 
-```text
-+-----------+------------------------------+
-| 列名      | 说明                         |
-+-----------+------------------------------+
-| rating    | 缺失时默认 1.0               |
-| timestamp | 缺失时默认 0                 |
-+-----------+------------------------------+
-```
+| 列名 | 说明 |
+| --- | --- |
+| rating | 缺失时默认 1.0 |
+| timestamp | 缺失时默认 0 |
 
 转换为 RecBole benchmark 数据：
 
@@ -109,37 +101,29 @@ python run_train.py
 
 支持的模型键：
 
-```text
-+--------------------+---------------------------------------------+-------------------------+
-| MODEL              | 配置文件                                    | 说明                    |
-+--------------------+---------------------------------------------+-------------------------+
-| pop                | configs/pop_movies_tv_full.yaml             | 热门基线                |
-| itemknn            | configs/itemknn_movies_tv_full.yaml         | ItemKNN 基线            |
-| bpr                | configs/bpr_movies_tv_full.yaml             | MF / BPR loss           |
-| neumf              | configs/neumf_movies_tv_full.yaml           | RecBole 内置 NeuMF      |
-| lightgcn           | configs/lightgcn_movies_tv_full.yaml        | 图协同过滤              |
-| sasrec             | configs/sasrec_movies_tv_full.yaml          | K=50 序列模型           |
-| sasrec_k5          | configs/sasrec_movies_tv_k5.yaml            | K=5 序列模型            |
-| sasrec_k2          | configs/sasrec_movies_tv_k2.yaml            | K=2 序列模型            |
-| bert4rec           | configs/bert4rec_movies_tv_full.yaml        | BERT4Rec 序列模型       |
-| crossdomain_neumf  | configs/crossdomain_neumf_movies_tv_full.yaml | 自定义优化 NeuMF      |
-+--------------------+---------------------------------------------+-------------------------+
-```
+| MODEL | 配置文件 | 说明 |
+| --- | --- | --- |
+| pop | configs/pop_movies_tv_full.yaml | 热门基线 |
+| itemknn | configs/itemknn_movies_tv_full.yaml | ItemKNN 基线 |
+| bpr | configs/bpr_movies_tv_full.yaml | MF / BPR loss |
+| neumf | configs/neumf_movies_tv_full.yaml | RecBole 内置 NeuMF |
+| lightgcn | configs/lightgcn_movies_tv_full.yaml | 图协同过滤 |
+| sasrec | configs/sasrec_movies_tv_full.yaml | K=50 序列模型 |
+| sasrec_k5 | configs/sasrec_movies_tv_k5.yaml | K=5 序列模型 |
+| sasrec_k2 | configs/sasrec_movies_tv_k2.yaml | K=2 序列模型 |
+| bert4rec | configs/bert4rec_movies_tv_full.yaml | BERT4Rec 序列模型 |
+| crossdomain_neumf | configs/crossdomain_neumf_movies_tv_full.yaml | 自定义优化 NeuMF |
 
 常用开关在 `run_train.py` 可调区域：
 
-```text
-+----------------------+----------------------------------------------+
-| 参数                 | 作用                                         |
-+----------------------+----------------------------------------------+
-| MODEL                | 选择模型                                     |
-| DEBUG                | 快速小规模运行                               |
-| EVAL_ONLY            | 只加载已有权重评估                           |
-| RESUME_FROM          | 断点续训权重路径                             |
-| EPOCHS               | 覆盖 yaml 中训练轮数                         |
-| TAG                  | 指标 JSON 文件名前缀                         |
-+----------------------+----------------------------------------------+
-```
+| 参数 | 作用 |
+| --- | --- |
+| MODEL | 选择模型 |
+| DEBUG | 快速小规模运行 |
+| EVAL_ONLY | 只加载已有权重评估 |
+| RESUME_FROM | 断点续训权重路径 |
+| EPOCHS | 覆盖 yaml 中训练轮数 |
+| TAG | 指标 JSON 文件名前缀 |
 
 默认 checkpoint 根目录在 `run_train.py` 的 `CHECKPOINT_ROOT` 中配置。当前实验使用 `D:\recbole_checkpoints`
 
@@ -174,23 +158,19 @@ scripts/eval_rrf_rank.py
 
 ## 脚本说明
 
-```text
-+------------------------------------------+----------------------------------------------+
-| 脚本                                     | 用途                                         |
-+------------------------------------------+----------------------------------------------+
-| scripts/convert_csv_to_recbole.py        | train/valid/test.csv 转 RecBole .inter 数据   |
-| scripts/build_sequential_dataset.py      | 从 movies_tv 生成 SASRec/BERT4Rec 序列数据   |
-| scripts/eval_full_catalog_hr.py          | RecBole 模型全库排序评估                     |
-| scripts/eval_crossdomain_full_catalog.py | CrossDomainNeuMF 全库排序评估                |
-| scripts/eval_cascade_rank.py             | 粗排 -> 精排级联评估                         |
-| scripts/eval_rrf_rank.py                 | 多模型 RRF 融合评估                          |
-| scripts/eval_seq_len_curve.py            | SASRec 推理阶段历史长度截断分析              |
-| scripts/compare_sasrec_topk_overlap.py   | 对比不同 SASRec 模型的 Top-K 推荐重叠        |
-| scripts/init_sequential_from_general.py  | 用 BPR/NeuMF item embedding 初始化序列模型   |
-| scripts/precompute_sasrec_future_recs.py | 预计算 SASRec 推荐缓存（可选，加速前端）   |
-| scripts/bench_per_user_latency.py        | 单用户推理耗时基准                           |
-+------------------------------------------+----------------------------------------------+
-```
+| 脚本 | 用途 |
+| --- | --- |
+| scripts/convert_csv_to_recbole.py | train/valid/test.csv 转 RecBole .inter 数据 |
+| scripts/build_sequential_dataset.py | 从 movies_tv 生成 SASRec/BERT4Rec 序列数据 |
+| scripts/eval_full_catalog_hr.py | RecBole 模型全库排序评估 |
+| scripts/eval_crossdomain_full_catalog.py | CrossDomainNeuMF 全库排序评估 |
+| scripts/eval_cascade_rank.py | 粗排 -> 精排级联评估 |
+| scripts/eval_rrf_rank.py | 多模型 RRF 融合评估 |
+| scripts/eval_seq_len_curve.py | SASRec 推理阶段历史长度截断分析 |
+| scripts/compare_sasrec_topk_overlap.py | 对比不同 SASRec 模型的 Top-K 推荐重叠 |
+| scripts/init_sequential_from_general.py | 用 BPR/NeuMF item embedding 初始化序列模型 |
+| scripts/precompute_sasrec_future_recs.py | 预计算 SASRec 推荐缓存（可选，加速前端） |
+| scripts/bench_per_user_latency.py | 单用户推理耗时基准 |
 
 `scripts/legacy/` 中是早期 RecBole quick_start 封装，保留用于回看历史实验，不建议作为新实验入口。
 
@@ -198,15 +178,11 @@ scripts/eval_rrf_rank.py
 
 ## 结果文件
 
-```text
-+--------------------------------------+------------------------------------------+
-| 路径                                 | 内容                                     |
-+--------------------------------------+------------------------------------------+
-| reports/Main_results.md              | 最终主结果表                             |
-| reports/model_reports/               | 每个最终模型的报告与定稿 JSON 拷贝       |
-| results/logs/                        | 原始指标 JSON                            |
-+--------------------------------------+------------------------------------------+
-```
+| 路径 | 内容 |
+| --- | --- |
+| reports/Main_results.md | 最终主结果表 |
+| reports/model_reports/ | 每个最终模型的报告与定稿 JSON 拷贝 |
+| results/logs/ | 原始指标 JSON |
 
 `reports/model_reports/` 是便于提交和阅读的归档目录；原始训练日志、TensorBoard、全量数据和权重不建议进入 Git。
 
@@ -223,15 +199,10 @@ python run_train.py
 
 运行前确认：
 
-```text
-+----------------------+----------------------------------------------+
-| 检查项               | 说明                                         |
-+----------------------+----------------------------------------------+
-| dataset              | yaml 中 dataset 与转换时 --name 一致         |
-| data_path            | 默认 datasets/                               |
-| EVAL_ONLY            | 没有已有权重时应设为 False                   |
-| eval_*_user_cap      | 控制验证 / 测试抽样用户数                    |
-+----------------------+----------------------------------------------+
-```
-
+| 检查项 | 说明 |
+| --- | --- |
+| dataset | yaml 中 dataset 与转换时 --name 一致 |
+| data_path | 默认 datasets/ |
+| EVAL_ONLY | 没有已有权重时应设为 False |
+| eval_*_user_cap | 控制验证 / 测试抽样用户数 |
 
