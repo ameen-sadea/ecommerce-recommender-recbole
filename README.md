@@ -9,6 +9,7 @@ recbole_platform/
 +-- README.md
 +-- requirements.txt
 +-- run_train.py                    # 统一训练 / 续训 / EVAL_ONLY 入口
++-- app.py                          # Streamlit 演示前端（python app.py）
 +-- build_sequential_dataset.py      # SASRec 序列数据生成
 +-- configs/                         # 模型配置
 +-- crossdomain_neumf/               # 自定义 CrossDomainNeuMF 实现
@@ -29,7 +30,32 @@ python -m venv .venv
 pip install -r requirements.txt
 ```
 
-如需 GPU，请先按 PyTorch 官方说明安装匹配 CUDA 的 `torch`，再安装其余依赖。
+如需 GPU，请先按 PyTorch 官方说明安装匹配 CUDA 的 `torch`，再安装其余依赖。前端另需 `streamlit`、`plotly`（已写入 `requirements.txt`）。
+
+## 演示前端（Streamlit）
+
+在 `recbole_platform/` 目录下：
+
+```powershell
+python app.py
+```
+
+浏览器打开后有三个 Tab：**我的首页**（test 用户 + SASRec 推荐）、**新客发现**（热门浏览 + 勾选后 SASRec 推荐）、**状态**（权重与离线指标）。
+
+### 演示前必需内容
+
+| 项目 | 路径 / 说明 |
+| --- | --- |
+| SASRec 权重 | `D:\recbole_checkpoints\movies_tv_seq\SASRec\best.pth`（或 `results/logs/` 里 SASRec JSON 的 `best_ckpt` 指向有效路径） |
+| 交互数据 | `datasets/movies_tv/*.inter` |
+| 序列数据 | `datasets/movies_tv_seq/*.inter`（选用户、SASRec 推理） |
+| 展示元数据 | `datasets/movies_tv/display/`（封面、标题、用户昵称） |
+
+说明：
+
+- **我的首页**与点击「生成推荐」后的列表由 **SASRec** 在线推理（可选命中 `results/sasrec_future/` 预计算缓存，约 1.7GB，不必上传 Git）。
+- **新客发现**的「热门发现」浏览区按全站交互频次 **Pop 排序**展示候选（统计 `.inter`，不需 Pop 模型权重）；用户勾选后，再由 **SASRec** 根据勾选序列生成推荐。
+- 上述 `datasets/` 与 D 盘权重默认不进 Git，需本地准备或网盘分发。
 
 ## 数据格式
 
@@ -161,10 +187,14 @@ scripts/eval_rrf_rank.py
 | scripts/eval_seq_len_curve.py            | SASRec 推理阶段历史长度截断分析              |
 | scripts/compare_sasrec_topk_overlap.py   | 对比不同 SASRec 模型的 Top-K 推荐重叠        |
 | scripts/init_sequential_from_general.py  | 用 BPR/NeuMF item embedding 初始化序列模型   |
+| scripts/precompute_sasrec_future_recs.py | 预计算 SASRec 推荐缓存（可选，加速前端）   |
+| scripts/bench_per_user_latency.py        | 单用户推理耗时基准                           |
 +------------------------------------------+----------------------------------------------+
 ```
 
 `scripts/legacy/` 中是早期 RecBole quick_start 封装，保留用于回看历史实验，不建议作为新实验入口。
+
+`results/sasrec_future/` 为前端可选缓存目录，体积大，已在 `.gitignore` 中忽略。
 
 ## 结果文件
 

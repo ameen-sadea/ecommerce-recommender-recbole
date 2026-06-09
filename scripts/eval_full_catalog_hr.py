@@ -27,7 +27,7 @@ if PLATFORM_ROOT not in sys.path:
 os.chdir(PLATFORM_ROOT)
 
 # ========================= 可调区域（只改这里）=========================
-MODEL = "sasrec_k5"  # bpr | neumf | lightgcn | sasrec | sasrec_k5 | sasrec_k2 | pop | itemknn
+MODEL = "sasrec"  # bpr | neumf | lightgcn | sasrec | sasrec_k5 | sasrec_k2 | pop | itemknn
 
 ON = "test"  # test | valid | both
 

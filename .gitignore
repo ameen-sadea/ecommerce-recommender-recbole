@@ -27,6 +27,7 @@ log_tensorboard/
 # Generated checkpoints and temporary outputs
 results/checkpoints/
 results/crossdomain_smoke/
+results/sasrec_future/
 results/logs/*
 !results/logs/.gitkeep
 saved/
